@@ -1,11 +1,10 @@
 import com.github.javafaker.Faker;
+import lombok.var;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 import utils.DataGenerator;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
@@ -13,29 +12,27 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class DeliveryTest {
 
-    @BeforeAll
-    static void setUpAll() {
+    @BeforeEach
+    void setUp() {
         open("http://localhost:9999");
     }
 
     @Test
     void shouldTest() {
-
-        $("[data-test-id='city'] input").setValue(DataGenerator.Registration.generateInfo("ru").getCity());
+        var user = DataGenerator.Registration.generateInfo("ru");
+        $("[data-test-id='city'] input").setValue(user.getCity());
         $("[type='tel']").doubleClick().sendKeys(Keys.BACK_SPACE);
-        String today = LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        $("[type='tel']").setValue(today);
-        $("[data-test-id='name'] input").setValue(DataGenerator.Registration.generateInfo("ru").getName());
-        $("[data-test-id='phone'] input").setValue(DataGenerator.Registration.generateInfo("ru").getPhoneNumber());
+        $("[type='tel']").setValue(user.getToday());
+        $("[data-test-id='name'] input").setValue(user.getName());
+        $("[data-test-id='phone'] input").setValue(user.getPhoneNumber());
         $("[data-test-id=agreement]").click();
         $(withText("Запланировать")).click();
+        $("[data-test-id=success-notification]").shouldHave(text("Встреча успешно запланирована на " + user.getToday()));
         $("[type='tel']").doubleClick().sendKeys(Keys.BACK_SPACE);
-        String nextDay = LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        $("[type='tel']").setValue(nextDay);
+        $("[type='tel']").setValue(user.getNextDay());
         $(withText("Запланировать")).click();
         $(withText("Перепланировать")).click();
         $(withText("Успешно!")).shouldBe(appear);
-        $(withText("Встреча успешно запланирована на")).shouldBe(appear);
-        $(withText(nextDay)).shouldBe(appear);
+        $("[data-test-id=success-notification]").shouldHave(text("Встреча успешно запланирована на " + user.getNextDay()));
     };
 }

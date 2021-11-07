@@ -3,6 +3,8 @@ package utils;
 import com.github.javafaker.Faker;
 import lombok.experimental.UtilityClass;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 @UtilityClass
@@ -16,7 +18,9 @@ public class DataGenerator {
             return new RegistrationInfo(
                     faker.name().firstName(),
                     faker.phoneNumber().phoneNumber(),
-                    faker.address().cityName()
+                    faker.address().cityName(),
+                    LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                    LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
             );
         }
     }
