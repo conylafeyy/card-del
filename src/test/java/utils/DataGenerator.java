@@ -18,7 +18,12 @@ public class DataGenerator {
             return new RegistrationInfo(
                     faker.name().firstName(),
                     faker.phoneNumber().phoneNumber(),
-                    faker.address().cityName(),
+                    faker.address().cityName()
+            );
+        }
+
+        public static DateInfo generateDate() {
+            return new DateInfo(
                     LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
                     LocalDate.now().plusDays(4).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
             );

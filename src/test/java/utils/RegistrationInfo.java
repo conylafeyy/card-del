@@ -7,6 +7,4 @@ public class RegistrationInfo {
     private final String name;
     private final String phoneNumber;
     private final String city;
-    private final String today;
-    private final String nextDay;
 }
