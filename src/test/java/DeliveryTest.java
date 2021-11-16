@@ -1,5 +1,5 @@
-import com.github.javafaker.Faker;
-import lombok.var;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +16,12 @@ public class DeliveryTest {
     void setUp() {
         open("http://localhost:9999");
     }
+
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+
 
     @Test
     void shouldTest() {
